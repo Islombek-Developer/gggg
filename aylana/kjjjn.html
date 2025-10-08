@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Oʻquv Markazi — Demo</title>
+  <meta name="description" content="Oʻquv markazi landing page — teacher ratings, student evaluations, register (parent & teacher)." />
+  <style>
+    /* ======= BASE / VARIABLES ======= */
+    :root{
+      --primary:#1D4ED8;
+      --primary-600:#2563EB;
+      --accent:#10B981;
+      --bg:#F8FAFC;
+      --card:#FFFFFF;
+      --text:#0F172A;
+      --muted:#6B7280;
+      --star:#FBBF24;
+      --danger:#DC2626;
+      --radius:12px;
+      --container:1200px;
+      --shadow: 0 6px 18px rgba(2,6,23,0.08);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding-bottom:80px;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:var(--container);margin:0 auto;padding:24px;}
+    @media(max-width:768px){.container{padding:16px}}
+    @media(max-width:420px){.container{padding:12px}}
+
+    /* ======= HEADER ======= */
+    .header{background:var(--bg);position:sticky;top:0;z-index:40;border-bottom:1px solid #E6EEF9}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .logo{font-weight:700;color:var(--primary);font-size:20px}
+    .menu{display:flex;gap:18px;align-items:center}
+    .menu a{color:var(--muted);font-weight:500}
+    .cta{background:var(--primary);color:#fff;padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+    .cta:hover{background:var(--primary-600)}
+
+    /* mobile menu */
+    .hamburger{display:none;background:transparent;border:none}
+    @media(max-width:880px){
+      .menu{display:none}
+      .hamburger{display:block}
+    }
+
+    /* ======= HERO ======= */
+    .hero{display:flex;gap:32px;align-items:center;padding:48px 0}
+    .hero-left{flex:1}
+    .hero h1{font-family: "Poppins", Inter, sans-serif;font-size:40px;margin:0 0 12px 0;line-height:1.05}
+    .hero p{margin:0 0 20px;color:var(--muted);max-width:640px}
+    .hero-buttons{display:flex;gap:12px}
+    .btn-secondary{background:transparent;border:1px solid rgba(17,24,39,0.08);padding:10px 14px;border-radius:10px;cursor:pointer}
+    .hero-right{flex:1;display:flex;justify-content:center}
+    .hero-art{width:100%;max-width:600px;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;background:linear-gradient(180deg,#fff,#f5f8ff);height:340px;display:flex;align-items:center;justify-content:center}
+
+    @media(max-width:880px){.hero{flex-direction:column;padding:24px 0}.hero-right{order:-1}.hero h1{font-size:28px}}
+
+    /* ======= SECTIONS ======= */
+    .section{padding:36px 0}
+    .section .title{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .grid{display:grid;gap:20px}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    @media(max-width:920px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:520px){.grid-3,.grid-4,.grid-2{grid-template-columns:1fr}}
+
+    /* ======= CARD ======= */
+    .card{background:var(--card);border-radius:12px;padding:14px;border:1px solid #E6EEF9;box-shadow:none}
+    .course-image{height:160px;border-radius:10px;background:linear-gradient(180deg,#eef2ff,#fff);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600}
+    .course-title{font-weight:600;margin:10px 0 6px}
+    .meta{color:var(--muted);font-size:14px;margin-bottom:10px}
+    .card-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .price{font-weight:700;color:var(--primary)}
+    .small-btn{padding:8px 12px;border-radius:8px;border:1px solid #E6EEF9;background:transparent;cursor:pointer}
+
+    /* ======= TEACHER CARD ======= */
+    .teacher{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px}
+    .avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(180deg,#f8fafc,#fff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary);flex:0 0 72px}
+    .teacher-info{flex:1}
+    .teacher-name{font-weight:700}
+    .teacher-sub{color:var(--muted);font-size:14px}
+    .rating{display:flex;gap:8px;align-items:center;font-weight:600;color:var(--muted)}
+    .star{color:var(--star);font-size:16px}
+
+    /* ======= REVIEWS ======= */
+    .review{padding:14px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #EEF2FF}
+    .review .meta{display:flex;gap:12px;align-items:center;color:var(--muted);margin-bottom:6px}
+
+    /* ======= REGISTER TABS ======= */
+    .tabs{background:var(--card);padding:18px;border-radius:12px;border:1px solid #E6EEF9}
+    .tab-buttons{display:flex;gap:8px;margin-bottom:12px}
+    .tab-btn{padding:8px 12px;border-radius:8px;border:1px solid transparent;background:transparent;cursor:pointer}
+    .tab-btn.active{background:linear-gradient(180deg,#eef2ff,#fff);border-color:#E0EEFF;font-weight:700}
+    .form-row{display:flex;gap:12px}
+    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+    .input, .select, .textarea{padding:10px;border-radius:8px;border:1px solid #E6EEF9;background:#fff}
+    .input:focus{outline:2px solid rgba(29,78,216,0.12)}
+    .file-drop{height:90px;border:1px dashed #E6EEF9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+
+    /* ======= FOOTER ======= */
+    .footer{padding:34px 0;border-top:1px solid #E6EEF9;margin-top:40px;background:transparent}
+    .socials{display:flex;gap:10px}
+
+    /* ======= MODAL & TOAST ======= */
+    .overlay{position:fixed;inset:0;background:rgba(2,6,23,0.4);display:none;align-items:center;justify-content:center;z-index:80}
+    .modal{background:var(--card);padding:20px;border-radius:12px;max-width:520px;width:92%;box-shadow:var(--shadow)}
+    .toast{position:fixed;right:18px;top:18px;background:var(--accent);color:#fff;padding:12px 18px;border-radius:10px;display:none;z-index:90}
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+    .gap-12{gap:12px}
+    .mb-12{margin-bottom:12px}
+    .mb-20{margin-bottom:20px}
+  </style>
+</head>
+<body>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Modal overlay -->
+  <div id="overlay" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">—</h3>
+      <p id="modal-body" class="muted"></p>
+      <div style="text-align:right;margin-top:14px">
+        <button onclick="closeModal()" class="small-btn">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav">
+      <div class="nav-left">
+        <div class="logo">TalimMarkaz</div>
+      </div>
+
+      <nav class="menu" aria-label="Main menu">
+        <a href="#home">Bosh sahifa</a>
+        <a href="#courses">Kurslar</a>
+        <a href="#teachers">Oʻqituvchilar</a>
+        <a href="#reviews">Sharhlar</a>
+      </nav>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <button class="cta" id="openRegister">Roʻyxatdan oʻtish</button>
+        <button class="hamburger" onclick="toggleMobileMenu()" aria-label="menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu (hidden on desktop) -->
+  <div id="mobileMenu" style="display:none;background:linear-gradient(180deg,#fff,#f8fafc);border-bottom:1px solid #E6EEF9;padding:12px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <a href="#home">Bosh sahifa</a>
+      <a href="#courses">Kurslar</a>
+      <a href="#teachers">Oʻqituvchilar</a>
+      <a href="#reviews">Sharhlar</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <main id="home" class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Kelajak kasbini biz bilan o‘rganing</h1>
+        <p>IT, til kurslari va professional yo‘nalishlar. Tajribali oʻqituvchilar, amaliy darslar va aniq progress monitoring.</p>
+        <div class="hero-buttons">
+          <button class="cta" id="heroRegister">Roʻyxatdan oʻtish</button>
+          <button class="btn-secondary" onclick="scrollToSection('courses')">Kurslarni koʻrish</button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-art">
+          <!-- placeholder graphic -->
+          <svg width="260" height="220" viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="0" y="0" rx="14" width="260" height="220" fill="#fff"/>
+            <g transform="translate(16,16)" fill="none" stroke="#E6EEF9" stroke-width="10">
+              <path d="M0 80 Q80 0 160 80 T320 80" transform="scale(0.7)"/>
+            </g>
+            <text x="30" y="120" fill="#9AA7D6" font-size="20" font-family="Inter">Oʻqish — amaliy</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES -->
+    <section id="courses" class="section">
+      <div class="title">
+        <h2>Mashhur kurslar</h2>
+        <a href="#register" class="muted">Barchasini koʻrish</a>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="course-image">Ingliz tili — Boshlang‘ich</div>
+          <div class="course-title">Ingliz tili boshlang‘ich</div>
+          <div class="meta">Til kurslari • Davomiylik: 3 oy</div>
+          <div class="card-footer">
+            <div class="price">250,000 soʻm/oy</div>
+            <div><button class="small-btn" onclick="openRegisterTab('parent')">Roʻyxatdan oʻtish</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="course-image">Web Development</div>
+          <div class="course-title">Web Development (HTML/CSS/JS)</div>
+          <div class="meta">IT kursi • Davomiylik: 4 oy</div>
+          <div class="card-footer">
+            <div class="price">350,000 soʻm/oy</div>
+            <div><button class="small-btn" onclick="openRegisterTab('parent')">Roʻyxatdan oʻtish</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="course-image">Grafik dizayn</div>
+          <div class="course-title">Grafik dizayn (Figma)</div>
+          <div class="meta">Dizayn • Davomiylik: 2 oy</div>
+          <div class="card-footer">
+            <div class="price">200,000 soʻm/oy</div>
+            <div><button class="small-btn" onclick="openRegisterTab('parent')">Roʻyxatdan oʻtish</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEACHERS -->
+    <section id="teachers" class="section">
+      <div class="title">
+        <h2>Eng yaxshi oʻqituvchilar</h2>
+        <div class="muted">Siz ularni reyting va sharhlarga qarab tanlashingiz mumkin</div>
+      </div>
+
+      <div class="grid grid-3 mb-12" id="teachersGrid">
+        <!-- populated by JS -->
+      </div>
+
+      <div style="text-align:center;margin-top:18px">
+        <button class="small-btn" onclick="openTeachersPage()">Barchasini koʻrish</button>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="section">
+      <div class="title">
+        <h2>Oʻquvchilar sharhlari</h2>
+        <div class="muted">Haqiqiy oʻquvchilarning fikrlari</div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="review">
+          <div class="meta">
+            <strong>Ali Valiev</strong><span class="muted">• 15.09.2025</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span class="star">★ ★ ★ ★ ☆</span>
+            <div class="muted">4.8 · 124 sharh</div>
+          </div>
+          <div>Juda samarali va tajribali oʻqituvchi. Darslar qiziqarli va aniq strukturalangan.</div>
+        </div>
+
+        <div class="review">
+          <div class="meta">
+            <strong>Zilola Ahmedova</strong><span class="muted">• 09.09.2025</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span class="star">★ ★ ★ ★ ☆</span>
+            <div class="muted">4.6 · 89 sharh</div>
+          </div>
+          <div>Ingliz tili kursi juda samarali. Hatto boshlangʻich darajadagi oʻquvchilar ham 3 oy ichida natija koʻrishmoqda.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTER -->
+    <section id="register" class="section">
+      <div class="title">
+        <h2>Roʻyxatdan oʻtish</h2>
+        <div class="muted">Iltimos, kerakli bo‘limni tanlang</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab-buttons" role="tablist" aria-label="Register types">
+          <button class="tab-btn active" id="tab-parent" role="tab" aria-selected="true" onclick="switchTab('parent')">Ota-ona</button>
+          <button class="tab-btn" id="tab-teacher" role="tab" aria-selected="false" onclick="switchTab('teacher')">Oʻqituvchi</button>
+        </div>
+
+        <div id="tabParent" class="tab-content">
+          <form id="formParent" onsubmit="submitParent(event)" novalidate>
+            <div class="form-row">
+              <div class="field" style="flex:1">
+                <label>Ism Familiya *</label>
+                <input class="input" name="parentName" required placeholder="Masalan: Oybek Nazarov" />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Telefon *</label>
+                <input class="input" name="parentPhone" required placeholder="+998 90 123 45 67" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field" style="flex:1">
+                <label>Email</label>
+                <input class="input" name="parentEmail" placeholder="email@example.com" />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Farzand ismi *</label>
+                <input class="input" name="childName" required placeholder="Farzand ismi" />
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px">
+              <div style="flex:1" class="field">
+                <label>Yosh</label>
+                <select class="select" name="childAge">
+                  <option>6-8</option><option>9-12</option><option>13-16</option>
+                </select>
+              </div>
+              <div style="flex:1" class="field">
+                <label>Kurs</label>
+                <select class="select" name="childCourse">
+                  <option>Ingliz tili — Boshlangʻich</option>
+                  <option>Web Development</option>
+                  <option>Grafik dizayn</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Boshlash sanasi</label>
+              <input class="input" type="date" name="startDate" />
+            </div>
+
+            <div style="display:flex;gap:12px;justify-content:flex-end">
+              <button type="submit" class="cta">Farzandni roʻyxatdan oʻtkazish</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="tabTeacher" class="tab-content" style="display:none">
+          <form id="formTeacher" onsubmit="submitTeacher(event)" novalidate>
+            <div class="form-row">
+              <div class="field" style="flex:1">
+                <label>Ism Familiya *</label>
+                <input class="input" name="teacherName" required placeholder="Masalan: Azizbek Xoliqov" />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Telefon *</label>
+                <input class="input" name="teacherPhone" required placeholder="+998 90 123 45 67" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field" style="flex:1">
+                <label>Email</label>
+                <input class="input" name="teacherEmail" placeholder="email@example.com" />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Fan *</label>
+                <select class="select" name="teacherSubject" required>
+                  <option>Matematika</option><option>Ingliz tili</option><option>IT</option><option>Fizika</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field" style="flex:1">
+                <label>Tajriba (yil)</label>
+                <input class="input" name="teacherExperience" placeholder="Masalan: 5" type="number" />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Haftada ishlash (soatlar)</label>
+                <input class="input" name="teacherHours" placeholder="Masalan: 10" type="number" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>CV / Sertifikatlarni yuklash</label>
+              <div class="file-drop" id="fileDrop">Faylni tortib keltiring yoki bosing</div>
+            </div>
+
+            <div style="display:flex;gap:12px;justify-content:flex-end">
+              <button type="submit" class="cta">Oʻqituvchi sifatida ariza yuborish</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
+          <div style="max-width:420px">
+            <div class="logo">TalimMarkaz</div>
+            <div class="muted" style="margin-top:8px">Toshkent, Chilanzor · +998 90 123 45 67 · info@talim.uz</div>
+          </div>
+
+          <div style="display:flex;gap:30px;flex-wrap:wrap">
+            <div>
+              <div style="font-weight:700;margin-bottom:8px">Foydali</div>
+              <div class="muted">FAQ<br/>Kurslar<br/>Toʻlov</div>
+            </div>
+
+            <div>
+              <div style="font-weight:700;margin-bottom:8px">Ijtimoiy</div>
+              <div class="socials muted">Telegram · Instagram</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+<script>
+/* ======= Sample teacher data ======= */
+const teachers = [
+  { id:1, name:"Ali Valiev", subject:"Matematika", exp:8, rating:4.8, reviews:124, bio:"Tajribali oʻqituvchi. Imtihonlarga tayyorlash va concept-based darslar." },
+  { id:2, name:"Zilola Ahmedova", subject:"Ingliz tili", exp:5, rating:4.6, reviews:89, bio:"Kommunikativ metodlar, IELTS/TOEFL tayyorlash." },
+  { id:3, name:"Shohruh Saidov", subject:"IT", exp:10, rating:4.9, reviews:156, bio:"Full-stack developer, amaliy loyihalar ustida ishlash." },
+  { id:4, name:"Mohira Rahimova", subject:"Fizika", exp:7, rating:4.7, reviews:102, bio:"Nazariy va eksperimental yondashuv, test tayyorlash." },
+  { id:5, name:"Bekzod Umarov", subject:"Kimyo", exp:6, rating:4.5, reviews:78, bio:"Amaliy mashgʻulotlar va laboratoriya tajribasi mavjud." }
+];
+
+/* ======= Render teacher cards ======= */
+function renderTeachers(limit=3){
+  const grid = document.getElementById('teachersGrid');
+  grid.innerHTML='';
+  (teachers.slice(0,limit)).forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'card teacher';
+    div.innerHTML = `
+      <div class="avatar">${t.name.split(' ').map(n=>n[0]).join('')}</div>
+      <div class="teacher-info">
+        <div class="teacher-name">${t.name}</div>
+        <div class="teacher-sub">${t.subject} · ${t.exp} yil</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+          <div class="rating"><span class="star">★</span> ${t.rating} · <span class="muted">${t.reviews} sharh</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="small-btn" onclick="openProfile(${t.id})">Profil</button>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+renderTeachers();
+
+/* ======= Modal / Toast ======= */
+function showToast(msg, duration=3000){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display='block';
+  setTimeout(()=>{ t.style.display='none'; }, duration);
+}
+function openModal(title, body){
+  const overlay = document.getElementById('overlay');
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').textContent = body;
+  overlay.style.display = 'flex';
+  overlay.setAttribute('aria-hidden','false');
+}
+function closeModal(){
+  const overlay = document.getElementById('overlay');
+  overlay.style.display='none';
+  overlay.setAttribute('aria-hidden','true');
+}
+
+/* ======= Register tabs ======= */
+function switchTab(tab){
+  document.getElementById('tab-parent').classList.remove('active');
+  document.getElementById('tab-teacher').classList.remove('active');
+  document.getElementById('tabParent').style.display='none';
+  document.getElementById('tabTeacher').style.display='none';
+  if(tab==='parent'){
+    document.getElementById('tab-parent').classList.add('active');
+    document.getElementById('tabParent').style.display='block';
+  } else {
+    document.getElementById('tab-teacher').classList.add('active');
+    document.getElementById('tabTeacher').style.display='block';
+  }
+}
+function openRegisterTab(tab='parent'){
+  switchTab(tab);
+  document.getElementById('openRegister').scrollIntoView({behavior:'smooth'});
+  showToast('Roʻyxatdan oʻtish formasini toʻldiring', 2000);
+}
+document.getElementById('openRegister').addEventListener('click', ()=> openRegisterTab('parent'));
+document.getElementById('heroRegister').addEventListener('click', ()=> openRegisterTab('parent'));
+
+/* ======= Form submissions (mock) ======= */
+function submitParent(e){
+  e.preventDefault();
+  const f = e.target;
+  // simple validation
+  if(!f.parentName.value || !f.parentPhone.value || !f.childName.value){
+    openModal('Xatolik', 'Iltimos, * belgi bilan belgilangan maydonlarni toʻldiring.');
+    return;
+  }
+  // mock success
+  showToast('Farzand muvaffaqiyatli roʻyxatga olindi!');
+  f.reset();
+}
+function submitTeacher(e){
+  e.preventDefault();
+  const f = e.target;
+  if(!f.teacherName.value || !f.teacherPhone.value || !f.teacherSubject.value){
+    openModal('Xatolik', 'Iltimos, * belgi bilan belgilangan maydonlarni toʻldiring.');
+    return;
+  }
+  showToast('Ariza yuborildi — siz bilan bogʻlanamiz');
+  f.reset();
+}
+
+/* ======= Profile view (modal) ======= */
+function openProfile(id){
+  const t = teachers.find(x=>x.id===id);
+  if(!t) return;
+  openModal(t.name, `${t.subject} · ${t.exp} yil tajriba\n\nReyting: ${t.rating} (${t.reviews} sharh)\n\n${t.bio}`);
+}
+
+/* ======= Utility: open teachers page / fake navigation ======= */
+function openTeachersPage(){
+  // Build a simple "page" by opening a modal with grid that lists all teachers (demo)
+  let html = '';
+  teachers.forEach(t=>{
+    html += `${t.name} — ${t.subject} · ${t.exp} yil · Reyting: ${t.rating}<br/>`;
+  });
+  openModal('Barcha oʻqituvchilar', html);
+}
+
+/* ======= Mobile menu ======= */
+function toggleMobileMenu(){
+  const m = document.getElementById('mobileMenu');
+  m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+
+/* ======= File drop (teacher CV) simple handler ======= */
+const fileDrop = document.getElementById('fileDrop');
+fileDrop.addEventListener('click', ()=> {
+  const inp = document.createElement('input'); inp.type='file';
+  inp.onchange = ()=> {
+    if(inp.files.length) fileDrop.textContent = inp.files[0].name;
+  };
+  inp.click();
+});
+fileDrop.addEventListener('dragover', (ev)=>{ ev.preventDefault(); fileDrop.style.borderColor = 'rgba(29,78,216,0.5)'; });
+fileDrop.addEventListener('dragleave', ()=>{ fileDrop.style.borderColor = '#E6EEF9'; });
+fileDrop.addEventListener('drop', (ev)=>{ ev.preventDefault(); fileDrop.style.borderColor = '#E6EEF9'; const f = ev.dataTransfer.files[0]; if(f) fileDrop.textContent = f.name; });
+
+/* ======= Scroll helper ======= */
+function scrollToSection(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>
